@@ -1,3 +1,10 @@
+
+let rock = document.querySelector("#rock");
+let paper = document.querySelector("#paper");
+let scissor = document.querySelector("#scissor");
+let result = document.querySelector('#result');
+let playerCount=0;
+let computerCount=0;
 //function to get computer's choice
 function getComputerChoice(){
     //using random function to get its choice
@@ -11,29 +18,14 @@ function getComputerChoice(){
             return "Paper".toLowerCase();
             break;
         case 2:
-            return "Scissors".toLowerCase();
+            return "Scissor".toLowerCase();
             break;
     }
 }
 
 
-
-
-//function to get player's choice
-function getPlayerChoice(){
-    const playerSelection = prompt("Your Choice","");
-    return (playerSelection.toLowerCase());
-} 
-
-
-
-
-//console.log(playerSelection);
-//console.log(computerSelection);
-
 //function to facilitate the game of rock_paper_scissors
-function playRound(){ 
-    const playerSelection = getPlayerChoice();
+function playRound(playerSelection){ 
     const computerSelection = getComputerChoice();
 
     if (playerSelection === computerSelection){ 
@@ -41,28 +33,73 @@ function playRound(){
     }
     else if (playerSelection === "rock"){
         if (computerSelection==="paper") return `You Lose! ${computerSelection} Beats ${playerSelection}`;
-        else if(computerSelection==="scissors") return `You Win! ${playerSelection} ats ${computerSelection}`;
+        else if(computerSelection==="scissor") return `You Win! ${playerSelection} ats ${computerSelection}`;
     }
     else if (playerSelection === "paper"){
-        if (computerSelection==="scissors") return `You Lose! ${computerSelection} Beats ${playerSelection}`;
+        if (computerSelection==="scissor") return `You Lose! ${computerSelection} Beats ${playerSelection}`;
         else if(computerSelection==="rock") return `You Win! ${playerSelection} ats ${computerSelection}`;
     }
-    else if (playerSelection === "scissors"){
+    else if (playerSelection === "scissor"){
         if (computerSelection==="rock") return `You Lose! ${computerSelection} Beats ${playerSelection}`;
         else if(computerSelection==="paper") return `You Win! ${playerSelection} ats ${computerSelection}`;
     }
 }
 
 //to play
-function playGame(){
-    let count=0;
-    for(let i=0;i<5;i++){
-        let result=playRound();
-        console.log(result);
-        if (result.includes("Win!")) count++;
-    }
-    if (count===3) return "Winner is Player";
-    else{ return "Winner is Computer";}
+function playGame(playerSelection){
+    console.log(playerSelection);
+    let outcome=playRound(playerSelection);
+    console.log(outcome);
+    if (outcome.includes("Win!")) playerCount++;
+    else if (outcome.includes("TIE!!!")) ;
+    else computerCount++;
+    result.innerText += outcome +`${playerCount} - ${computerCount}`+ "\n";
+    if(playerCount==5 || computerCount == 5){
+        if(playerCount>computerCount) result.innerText +=  'Winner is Player';
+        else result.innerText +=  'Winner is Computer';
+        rock.disabled = true;
+        paper.disabled=true;
+        scissor.disabled=true;
+
+            }
+    
 }
 
-console.log(playGame());
+
+function resetCountsAndText(event) {
+    result.innerText = '';
+    playerCount = computerCount = 0;
+    rock.disabled = false;
+    paper.disabled=false;
+    scissor.disabled=false;
+
+}
+
+
+let choice = document.querySelector("#choice");
+
+choice.addEventListener("click", (event) => {
+    let target = event.target;
+
+    switch(target.id) {
+        case 'rock':
+            console.log('rock');
+            playGame('rock');
+            break;
+        case 'paper':
+            playGame('paper');
+            break;
+        case 'scissor':
+            playGame('scissor');
+            break;
+        case "reset":
+            resetCountsAndText();
+            break;
+    }
+});
+
+
+
+
+
+
